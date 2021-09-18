@@ -37,10 +37,15 @@ def useradd():
     door = input("\t\t门牌号:")
     account=random.randint(10000000,99999999)
     money=0
-    bankadd=bank_adduser(username,password,country,province,street,door,account,money)
-    if bankadd == 1:
-        print("添加用户成功，以下是您的信息")
-        info = '''
+    innode=1
+    for key in bank :
+        if bank[key]['ran']==account :
+            innode=0
+    if innode==1 :
+        bankadd=bank_adduser(username,password,country,province,street,door,account,money)
+        if bankadd == 1:
+            print("添加用户成功，以下是您的信息")
+            info = '''
                     ------------个人信息------------
                     用户名:%s
                     账号：%s
@@ -53,11 +58,13 @@ def useradd():
                     开户行名称：%s
                 '''
         # 每个元素都可传入%
-        print(info % (username, account, country, province, street, door, bank[username]["money"], bank_name))
-    elif bankadd ==2:
-        print("用户已存在")
-    elif bankadd == 3:
-        print("数据库已满")
+            print(info % (username, account, country, province, street, door, bank[username]["money"], bank_name))
+        elif bankadd ==2:
+            print("用户已存在")
+        elif bankadd == 3:
+            print("数据库已满")
+    else:
+        print("账号已存在")
 def save_money():
     username=input("输入存款用户名：")
     if username in bank :
@@ -139,19 +146,15 @@ while True:#永远循环
     begin = input("请选择业务")
     if begin == "1":
         useradd()
-        print(bank)
     elif begin == "2":
         print("取钱")
         withdraw_money()
-        print(bank)
     elif begin == "3":
         print("存钱")
         save_money()
-        print(bank)
     elif begin == "4":
         print("转账")
         transfer_accounts()
-        print(bank)
     elif begin == "5":
         print("查询")
         query()
